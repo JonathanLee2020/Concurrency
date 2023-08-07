@@ -20,6 +20,52 @@ async function fetchUserData(id) {
 
 // Put your code here
 // ------------------
+async function getID () {
+  // that returns an array of length 100, with the values being 0-99
+  const userIdArray = await fetchFollowerIds();
+  let data = userIdArray.map((id) => {
+    return fetchUserData(id)
+  });
+
+  let newPromiseArray = await Promise.all(data)
+
+  console.log(newPromiseArray[0])
+  const $followers = document.querySelector(".followers");
+  $followers.innerHTML = generateHTML(newPromiseArray).join("");
+}
+
+function generateHTML (array) {
+  return (
+    array.map((element) => {
+      console.log(element.avatar)
+      return (
+        `<div class="profile">
+        <img class="profile__avatar" src=${element.avatar}>
+        <div class="profile__info">
+          <p class="profile__username">David Bragg</p>
+          <p class="profile__bio">Software Engineer at Canva</p>
+        </div>
+        <button class="profile__unfollow">Remove</button>
+      </div>`
+      )
+    })
+  )
+}
+
+
+
+{/* // newPromiseArray.map(<div class="profile">
+//   <img class="profile__avatar" src="https://www.gravatar.com/avatar/3456?d=identicon&s=64">
+//   <div class="profile__info">
+//     <p class="profile__username">David Bragg</p>
+//     <p class="profile__bio">Software Engineer at Canva</p>
+//   </div>
+//   <button class="profile__unfollow">Remove</button>
+// </div>) */}
+
+getID()
+// map the 100 values to the fetchUserData which takes an id int and returns a promise
+
 
 // ------------------
 
